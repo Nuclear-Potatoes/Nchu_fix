@@ -1,15 +1,24 @@
 name: build-apk
 
-# 本机没有 JDK/Android SDK 时，可以把本目录作为仓库根目录推送到 GitHub，
-# 用这套工作流直接产出可安装的 APK（在 Actions 的 Artifacts 里下载）。
+# 在 GitHub Actions 上直接产出可安装的 APK（在 Artifacts 里下载）。
 #
-# 注意：仓库里已包含 Gradle Wrapper（gradlew / gradlew.bat / gradle-wrapper.jar），
-# 因此这里统一用 ./gradlew，保证本地与 CI 使用完全相同的 Gradle 版本（9.8）。
+# 关于 Android SDK：GitHub 的 ubuntu-latest 镜像**已预装** Android SDK，
+# 因此这里不再使用 android-actions/setup-android —— 该 action 会执行
+# `sdkmanager "tools"`，而新版 cmdline-tools 已移除 `tools` 包，会直接报错：
+#     Warning: Failed to find package 'tools'
+#     Error: The process '.../sdkmanager' failed with exit code 1
+# 我们只设置 ANDROID_HOME / ANDROID_SDK_ROOT 指向镜像自带的 SDK，更稳更快。
+#
+# 仓库已包含 Gradle Wrapper（gradlew / gradlew.bat / gradle-wrapper.jar），
+# 统一用 ./gradlew，保证本地与 CI 使用完全相同的 Gradle 版本（9.8）。
 
 on:
   push:
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -23,22 +32,63 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # 使用镜像预装的 Android SDK，仅需告知 Gradle 它的位置
+      - name: Locate Android SDK
+        run: |
+          if [ -z "${ANDROID_SDK_ROOT}" ]; then
+            export ANDROID_SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          fi
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}"
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=${ANDROID_SDK_ROOT}" >> "$GITHUB_ENV"
+          if [ ! -d "${ANDROID_SDK_ROOT}" ]; then
+            echo "ERROR: Android SDK directory not found: ${ANDROID_SDK_ROOT}"
+            exit 1
+          fi
+          echo "Android SDK located OK"
 
-      # 使用仓库自带的 gradlew；setup-gradle 负责缓存，不必再指定版本
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # 保险：Windows 上提交的 gradlew 可能丢失可执行位（100644），
+      # 那样 CI 里 ./gradlew 会直接 Permission denied。这里显式补一次。
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x ./gradlew && ls -l ./gradlew
+
+      # release 变体复用了调试签名（signingConfigs.debug）。CI 的 ~/.android 是干净的，
+      # 这里显式生成 debug.keystore，避免依赖 AGP 的隐式自动创建行为。
+      # 仅用于 CI 出包验证；正式分发请自行配置 signingConfigs.release。
+      - name: Ensure debug keystore
+        run: |
+          mkdir -p "$HOME/.android"
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            "$JAVA_HOME/bin/keytool" -genkeypair -v \
+              -keystore "$HOME/.android/debug.keystore" \
+              -storepass android -keypass android \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+          ls -l "$HOME/.android/debug.keystore"
 
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
 
-      - name: Upload APK
+      # 一并构建 release（复用调试签名，可直接安装覆盖）
+      - name: Build release APK
+        run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
+
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NahangFix-debug-apk
           path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NahangFix-release-apk
+          path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
