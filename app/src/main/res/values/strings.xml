@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">蓝航修复</string>
+    <string name="xposed_description">修复蓝航 App(cn.edu.nchu.nahang) 启动时 RongContext.getInstance() 为 null 导致的 getEventBus() 空指针崩溃，并支持在模块内一键复现/验证补丁（需要 root）。</string>
+</resources>

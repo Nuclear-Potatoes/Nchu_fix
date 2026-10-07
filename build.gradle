@@ -1,0 +1,5 @@
+// 顶层构建脚本：只声明插件，具体配置在 app/build.gradle
+// 说明：本机 Gradle 为 9.x，因此 AGP 使用与之配套的 9.x 版本。
+plugins {
+    id 'com.android.application' version '9.4.1' apply false
+}

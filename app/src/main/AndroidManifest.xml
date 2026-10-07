@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 复现流程期间用前台服务保活 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- 流程期间持有 CPU 唤醒锁，避免熄屏后 App 被冻结导致流程卡住 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- Xposed / LSPosed 模块声明 -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_description" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="54" />
+        <!-- LSPosed 支持用数组声明作用域，安装后默认只勾选目标 App -->
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/xposed_scope" />
+
+        <service
+            android:name=".ReproService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name" />
+
+        <!--
+          桌面入口用 activity-alias：这样"隐藏桌面图标"只需禁用该 alias，
+          MainActivity 本身保持可用（仍可用 adb am start -n 包名/.MainActivity 打开）。
+        -->
+        <activity-alias
+            android:name=".Launcher"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!--
+          CATEGORY_INFO 入口（关键）：
+          PackageManager#getLaunchIntentForPackage() 会**先找 CATEGORY_INFO**，找不到才找 CATEGORY_LAUNCHER。
+          所以即使桌面入口（.Launcher）被"隐藏桌面图标"开关禁用，LSPosed 等仍能通过这个入口打开本应用；
+          而启动器只列 CATEGORY_LAUNCHER，**不会**把这条显示到桌面。
+          没有它就会出现"隐藏图标后 LSPosed 里没有打开模块的入口"。
+        -->
+        <activity-alias
+            android:name=".LauncherInfo"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.INFO" />
+            </intent-filter>
+        </activity-alias>
+    </application>
+
+</manifest>

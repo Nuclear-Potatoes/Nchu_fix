@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 模块作用域：只作用于南航 App，避免影响其它应用 -->
+    <string-array name="xposed_scope">
+        <item>cn.edu.nchu.nahang</item>
+    </string-array>
+</resources>

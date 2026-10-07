@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Miuix / MIUI 风格布局：
+  · 大标题头卡（品牌渐变）+ 圆角白卡分组
+  · 分组标题为小号次要色文字，行高 52dp，行图标为浅蓝圆底
+  · 页面底色 #F5F6F8，卡片圆角 16dp，靠留白分层（不使用阴影）
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/page_padding"
+        android:paddingBottom="28dp">
+
+        <!-- ============ 头部 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@mipmap/ic_launcher_round" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="蓝航 · 崩溃修复"
+                        android:textColor="@color/text_on_brand"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:alpha="0.85"
+                        android:text="NahangFix v1.3.0 · Xposed 模块"
+                        android:textColor="@color/text_on_brand"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvHeaderStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:alpha="0.92"
+                android:lineSpacingExtra="2dp"
+                android:text="正在读取状态…"
+                android:textColor="@color/text_on_brand"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- ============ 运行状态 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_gap"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="运行状态" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/dotInject"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_dot" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="模块注入"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:id="@+id/tvInject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_body" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/dotPatch"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_dot" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="修复开关"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:id="@+id/tvPatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_body" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/dotIm"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_dot" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="融云连接"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:id="@+id/tvIm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_body" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/dotPid"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/bg_dot" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="目标进程"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:id="@+id/tvPid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_body" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRootHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="3dp"
+                android:text=""
+                android:textColor="@color/text_tertiary"
+                android:textSize="@dimen/text_caption" />
+        </LinearLayout>
+
+        <!-- ============ 补丁控制 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_gap"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="补丁控制" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/row_height"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="启用修复"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_row" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="关闭后模块只观测、不修复。下面的两个一键按钮会自动切换它（复现=关闭，验证=开启），也可以手动拨"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="@dimen/text_caption" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/switchRepairs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:thumbTint="@color/switch_thumb"
+                    android:trackTint="@color/switch_track" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:id="@+id/rowForceStop"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/row_icon"
+                    android:layout_height="@dimen/row_icon"
+                    android:background="@drawable/bg_row_icon"
+                    android:contentDescription="@null"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_clear"
+                    android:tint="@color/brand" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="强制停止目标 App（让 Hook 生效）"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ============ 复现与验证 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_gap"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="复现与验证" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:text="复现条件：目标 App 曾进入「消息」页，且是「进程被杀后带保存状态恢复」。\n执行流程：冷启动 → 回桌面保存状态 → 杀掉主进程 → 恢复任务栈 → 判定日志。"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_caption" />
+
+            <Button
+                android:id="@+id/btnRepro"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_button_primary"
+                android:text="一键复现崩溃（先关闭修复）"
+                android:textAllCaps="false"
+                android:textColor="@color/text_on_brand"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_button_secondary"
+                android:text="一键验证补丁（开启修复）"
+                android:textAllCaps="false"
+                android:textColor="@color/brand"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvStep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:lineSpacingExtra="2dp"
+                android:text=""
+                android:textColor="@color/brand"
+                android:textSize="@dimen/text_caption" />
+
+            <ScrollView
+                android:id="@+id/logScroll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/log_height"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_log"
+                android:descendantFocusability="blocksDescendants"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:padding="10dp"
+                android:scrollbars="vertical">
+
+                <TextView
+                    android:id="@+id/tvLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp"
+                    android:text=""
+                    android:textColor="@color/text_secondary"
+                    android:textIsSelectable="true"
+                    android:textSize="11sp"
+                    android:typeface="monospace" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- ============ 诊断 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_gap"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="诊断" />
+
+            <LinearLayout
+                android:id="@+id/rowHideIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/row_height"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="隐藏桌面图标"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_row" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="隐藏后桌面看不到图标，但仍可在 LSPosed 模块列表里「打开」本应用（或 adb am start -n com.dsh.nahangfix/.MainActivity）"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="@dimen/text_caption" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/switchHideIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:thumbTint="@color/switch_thumb"
+                    android:trackTint="@color/switch_track" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:id="@+id/rowRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/row_icon"
+                    android:layout_height="@dimen/row_icon"
+                    android:background="@drawable/bg_row_icon"
+                    android:contentDescription="@null"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_refresh"
+                    android:tint="@color/brand" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="刷新状态"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:id="@+id/rowCopy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/row_icon"
+                    android:layout_height="@dimen/row_icon"
+                    android:background="@drawable/bg_row_icon"
+                    android:contentDescription="@null"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_copy"
+                    android:tint="@color/brand" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="复制日志到剪贴板"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View style="@style/RowDivider" />
+
+            <LinearLayout
+                android:id="@+id/rowClear"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/row_height"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/row_icon"
+                    android:layout_height="@dimen/row_icon"
+                    android:background="@drawable/bg_row_icon"
+                    android:contentDescription="@null"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_clear"
+                    android:tint="@color/brand" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="清空日志"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_row" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ============ 关于 ============ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_gap"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="@dimen/card_padding">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:text="关于" />
+
+            <TextView
+                android:id="@+id/tvAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_body" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

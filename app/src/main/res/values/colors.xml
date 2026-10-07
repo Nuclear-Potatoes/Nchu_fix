@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Miuix / MIUI 风格配色 -->
+<resources>
+    <!-- 品牌色与图标同源（取自蓝航图标主色 #028BF8） -->
+    <color name="brand">#028BF8</color>
+    <color name="brand_dark">#016FC6</color>
+    <color name="brand_light">#E8F3FE</color>
+
+    <!-- 页面与卡片 -->
+    <color name="page_bg">#F5F6F8</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_bg_pressed">#F2F3F5</color>
+    <color name="divider">#EBEDF0</color>
+    <color name="control_bg">#F0F1F3</color>
+    <color name="log_bg">#FAFAFB</color>
+
+    <!-- 文字 -->
+    <color name="text_primary">#191919</color>
+    <color name="text_secondary">#7F7F7F</color>
+    <color name="text_tertiary">#B0B0B0</color>
+    <color name="text_on_brand">#FFFFFF</color>
+
+    <!-- 状态 -->
+    <color name="state_ok">#35C759</color>
+    <color name="state_warn">#FF9F0A</color>
+    <color name="state_bad">#FF3B30</color>
+    <color name="state_unknown">#C8C8C8</color>
+</resources>
